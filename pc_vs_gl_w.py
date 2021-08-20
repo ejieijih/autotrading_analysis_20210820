@@ -45,7 +45,7 @@ if __name__ == '__main__':
         print('Cumulative contribution rate from 1st to 6th PC:')
         print(np.cumsum(pca.explained_variance_ratio_))
 
-        pc.append(np.concatenate([pca.mean_[np.newaxis,:],pca.components_],axis=0))
+        pc.append(pca.components_)
 
         for xi in range(6):
 
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     # save principal components
     pc = np.array(pc).reshape(len(pc[0])*2,-1)
     df_pc= pd.DataFrame(pc.T, 
-        columns = ['buy_mean']+['buy_pc{:02}'.format(num+1) for num in range(6)]+['sell_mean']+['sell_pc{:02}'.format(num+1) for num in range(6)],
+        columns = ['buy_pc{:02}'.format(num+1) for num in range(6)]+['sell_pc{:02}'.format(num+1) for num in range(6)],
         index = keys[st_indicator:])
     print('saving: {}'.format(str(out_pc_path)))
     df_pc.to_csv(str(out_pc_path))
