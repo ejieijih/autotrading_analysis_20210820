@@ -13,9 +13,9 @@
    ```
 4. run other python scripts to get analysis results
    ```
-   $ python osc_vs_gl.py
-   $ python pca_100dim_to_6pc.py
-   $ python pca_by_indicator.py
    $ python pc_vs_gl_w.py
    ```
-5. see analysis results in `./out`
+5. see `./out/pc_vs_gl_w....png` to define thresholding values for each component
+7. use `./principal_components_100dim_to_6val.csv` to calculate each component value as follow
+
+   $$X_{indicators}: n$$
