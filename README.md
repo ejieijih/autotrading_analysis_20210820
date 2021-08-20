@@ -15,5 +15,7 @@
    ```
    $ python osc_vs_gl.py
    $ python pca_100dim_to_6pc.py
+   $ python pca_by_indicator.py
+   $ python pc_vs_gl_w.py
    ```
 5. see analysis results in `./out`
