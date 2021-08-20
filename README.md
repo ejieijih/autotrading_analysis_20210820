@@ -16,4 +16,4 @@
    $ python osc_vs_gl.py
    $ python pca_100dim_to_6pc.py
    ```
-5. see analysis results from `./out`
+5. see analysis results in `./out`
