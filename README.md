@@ -11,8 +11,9 @@
    ```
    $ python add_keys_to_test2.py
    ```
-4. run other python codes to get analysis results
+4. run other python scripts to get analysis results
    ```
    $ python osc_vs_gl.py
    $ python pca_100dim_to_6pc.py
    ```
+5. see analysis results from `./out`

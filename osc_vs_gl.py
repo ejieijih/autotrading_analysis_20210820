@@ -6,7 +6,7 @@ import numpy as np
 if __name__ == '__main__':
 
     # set paths
-    dir_path = Path('./')
+    dir_path = Path('./data')
     csv_path = dir_path / 'パラメーターテスト2_keys.txt'
     out_dir_path = Path('./out')
     out_dir_path.mkdir(parents=True, exist_ok=True)
@@ -21,9 +21,8 @@ if __name__ == '__main__':
     df = pd.read_csv(str(csv_path))
     keys = df.keys().values
 
-    # calc idea_correctness?
+    # set flags
     is_buy = df['strbuysell'].values == 'close_buy'
-    Mat = df.iloc[:,8:].values.reshape(len(df),5,5,4).transpose(3,2,1,0)
 
     # plot
     for indicator in indicators:

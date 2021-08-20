@@ -7,7 +7,7 @@ from sklearn.decomposition import PCA
 if __name__ == '__main__':
 
     # set paths
-    dir_path = Path('./')
+    dir_path = Path('./data')
     csv_path = dir_path / 'パラメーターテスト2_keys.txt'
     out_dir_path = Path('./out')
     out_dir_path.mkdir(parents=True, exist_ok=True)
@@ -21,12 +21,11 @@ if __name__ == '__main__':
     df = pd.read_csv(str(csv_path))
     keys = df.keys().values
 
-    # calc idea_correctness?
+    # set flags
     is_buy = df['strbuysell'].values == 'close_buy'
-    is_positive = (df['wkFixPips'][is_buy] > 0).values
-    # Mat = df.iloc[:,8:].values.reshape(len(df),5,5,4).transpose(3,2,1,0)
+    is_positive = df['wkFixPips'][is_buy].values > 0
 
-    # pca to compress oscilator value
+    # pca to compress indicator value
     X = df.iloc[:,8:].values
     X = np.array([df.iloc[i,8:].values for i in range(len(df)) if is_buy[i]])
     pca = PCA(n_components=6)
