@@ -29,3 +29,6 @@ analysis of autotrading for hikikoumori
    # project indicator values to 1st-pc-vector
    pc01_projected_val = np.dot(X, pc01_vec)
    ```
+normalizeの参考リンク [[1]]
+
+[1]: https://qiita.com/maskot1977/items/082557fcda78c4cdb41f#%E8%A1%8C%E5%88%97%E3%81%AE%E6%A8%99%E6%BA%96%E5%8C%96
