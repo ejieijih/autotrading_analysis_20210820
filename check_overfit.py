@@ -154,8 +154,9 @@ if __name__ == '__main__':
 
     plt.close('all')
     plt.figure()
-    plt.bar(['buy_before','buy_after','sell_before','sell_after'], [test_results[0,0],0,test_results[1,0],0],alpha=0.6)
-    plt.bar(['buy_before','buy_after','sell_before','sell_after'], [0,test_results[0,1],0,test_results[1,1]],alpha=0.6)
+    plt.bar(['buy','buy w/ pc-th','sell','sell w/ pc-th'], [test_results[0,0],0,test_results[1,0],0],alpha=0.6)
+    # plt.bar(['buy_before','buy_after','sell_before','sell_after'], [0,test_results[0,1],0,test_results[1,1]],alpha=0.6)
+    plt.bar(['buy','buy w/ pc-th','sell','sell w/ pc-th'], [0,test_results[0,1],0,test_results[1,1]],alpha=0.6)
     plt.grid(axis='y')
     plt.ylabel('sum of '+y_label)
     plt.legend()
