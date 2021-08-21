@@ -31,4 +31,13 @@ analysis of autotrading for hikikoumori
    ```
 normalizeの参考リンク [[1]]
 
+## Experiment using the method
+We provide experiment script separating training and test data. Note that thresholding values need to be manually defined.
+
+1. execute `./check_overfit.py`
+   ```
+   $ python check_overfit.py
+   ```
+2. check `./out/exp_results.png`
+
 [1]: https://qiita.com/maskot1977/items/082557fcda78c4cdb41f#%E8%A1%8C%E5%88%97%E3%81%AE%E6%A8%99%E6%BA%96%E5%8C%96
