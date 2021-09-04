@@ -9,12 +9,12 @@ analysis of autotrading for hikikoumori
    $ mkdir ./data
    ```
 2. put `パラメーターテスト4.txt` in the `data` directory
-3. run `./pc_vs_gl_w.py` to get analysis results
+3. run `./regression.py` to get analysis results
    ```
-   $ python pc_vs_gl_w.py
+   $ python regression.py
    ```
-4. see `./out/pc_vs_gl_w_*.png` to define thresholding values for each component
-5. use principal component vectors in `./principal_components_100dim_to_6val.csv` to calculate each component value as follow;
+4. see `./out/sliding_window.png`/`./out/linear_regression.png` to check performance
+5. use principal component vectors in `./principal_components_100dim_to_pcs.csv` to calculate each component value as follow;
    ```py
    import numpy as np
 
@@ -29,6 +29,10 @@ analysis of autotrading for hikikoumori
    # project indicator values to 1st-pc-vector
    pc01_projected_val = np.dot(X, pc01_vec)
    ```
+6. use `{future work}` to get threshold
+
+
+
 normalizeの参考リンク [[1]]
 
 ## Experiment using the method

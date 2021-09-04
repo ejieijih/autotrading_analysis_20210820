@@ -124,6 +124,45 @@ def save_pc_vecs(pc):
 
     return df_pc
 
+def get_linear_regression(Xd_train, pc_i, target_index):
+
+    x, y = Xd_train[:,pc_i].reshape(-1,1), df[y_label].values[target_index]
+    lr = LinearRegression()
+    lr.fit(x, y)
+    w_min, w_max = x.min(),x.max()
+    w_stride = (w_max - w_min)/50
+    w_cent = np.arange(w_min, w_max, w_stride)
+    w_num = len(w_cent)
+    w_gp_mean = lr.predict(w_cent.reshape(-1,1)).flatten()
+
+    return w_cent, w_gp_mean, w_num, w_stride, w_min, w_max
+
+def get_negative_domain(w_cent, w_gp_mean, w_num, w_stride, w_min, w_max):
+
+    is_positive = (w_gp_mean >= 0).astype(int)
+    is_boundary = is_positive[1:] - is_positive[:-1]
+    down_pcval = [w_cent[1:][i] for i in range(len(is_boundary)) if is_boundary[i] == -1]
+    up_pcval = list(np.array([w_cent[1:][i] for i in range(len(is_boundary)) if is_boundary[i] == 1]) - w_stride)
+    if (len(down_pcval) > 0) & (len(up_pcval) > 0):
+        if down_pcval[0] > up_pcval[0]:
+            if len(down_pcval) == len(up_pcval):
+                negative_domain = np.array([down_pcval, up_pcval[1:]+[w_max]]).T.tolist()
+            elif len(down_pcval) < len(up_pcval):
+                negative_domain = np.array([down_pcval, up_pcval[1:]]).T.tolist()
+        else:
+            if len(down_pcval) == len(up_pcval):
+                negative_domain = np.array([down_pcval, up_pcval]).T.tolist()
+            elif len(down_pcval) > len(up_pcval):
+                negative_domain = np.array([down_pcval, up_pcval+[w_max]]).T.tolist()
+    elif len(up_pcval) > 0:
+        negative_domain = [[w_min, up_pcval[0]]]
+    elif len(down_pcval) > 0:
+        negative_domain = [[down_pcval[0], w_max]]
+    else: 
+        negative_domain = [[]]
+
+    return negative_domain
+
 if __name__ == '__main__':
 
     # save principal components
@@ -162,38 +201,10 @@ if __name__ == '__main__':
                 elif alg == 'linear_regression':
 
                     # get regression
-                    x, y = Xd_train[:,pc_i].reshape(-1,1), df[y_label].values[target_index]
-                    lr = LinearRegression()
-                    lr.fit(x, y)
-                    w_min, w_max = x.min(),x.max()
-                    w_stride = (w_max - w_min)/50
-                    w_cent = np.arange(w_min, w_max, w_stride)
-                    w_num = len(w_cent)
-                    w_gp_mean = lr.predict(w_cent.reshape(-1,1)).flatten()
+                    w_cent, w_gp_mean, w_num, w_stride, w_min, w_max = get_linear_regression(Xd_train, pc_i, target_index)
 
                 # get negative domain
-                is_positive = (w_gp_mean >= 0).astype(int)
-                is_boundary = is_positive[1:] - is_positive[:-1]
-                down_pcval = [w_cent[1:][i] for i in range(len(is_boundary)) if is_boundary[i] == -1]
-                up_pcval = list(np.array([w_cent[1:][i] for i in range(len(is_boundary)) if is_boundary[i] == 1]) - w_stride)
-                if (len(down_pcval) > 0) & (len(up_pcval) > 0):
-                    if down_pcval[0] > up_pcval[0]:
-                        if len(down_pcval) == len(up_pcval):
-                            negative_domain = np.array([down_pcval, up_pcval[1:]+[w_max]]).T.tolist()
-                        elif len(down_pcval) < len(up_pcval):
-                            negative_domain = np.array([down_pcval, up_pcval[1:]]).T.tolist()
-                    else:
-                        if len(down_pcval) == len(up_pcval):
-                            negative_domain = np.array([down_pcval, up_pcval]).T.tolist()
-                        elif len(down_pcval) > len(up_pcval):
-                            negative_domain = np.array([down_pcval, up_pcval+[w_max]]).T.tolist()
-                elif len(up_pcval) > 0:
-                    negative_domain = [[w_min, up_pcval[0]]]
-                elif len(down_pcval) > 0:
-                    negative_domain = [[down_pcval[0], w_max]]
-                else: 
-                    negative_domain = [[]]
-                negative_domain_tmp.append(negative_domain)
+                negative_domain = get_negative_domain(w_cent, w_gp_mean, w_num, w_stride, w_min, w_max)
 
                 # # save plot
                 # plot_pcprojval_vs_fixpips(Xd_train, pc_i, w_cent, w_gp_mean, w_num, negative_domain)
