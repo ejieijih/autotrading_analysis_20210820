@@ -96,6 +96,7 @@ def plot_pcprojval_vs_fixpips(Xd_train, y_train, pc_i, w_cent, w_gp_mean, w_num,
 
     plt.close('all')
     plt.figure()
+    plt.hist(Xd_train[:,pc_i],30,alpha=0.6,color='g',label='histgram')
     plt.scatter(
         Xd_train[:,pc_i],
         y_train,
