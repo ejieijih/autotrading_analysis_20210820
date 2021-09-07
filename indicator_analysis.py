@@ -9,7 +9,7 @@ if __name__ == '__main__':
     # set paths
     dir_path = Path('./data')
     csv_path = dir_path / 'パラメーターテスト4.txt'
-    out_dir_path = Path('./out')
+    out_dir_path = Path('./out/indicator_analysis')
     out_dir_path.mkdir(parents=True, exist_ok=True)
 
     # set params
