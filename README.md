@@ -4,11 +4,12 @@ analysis of autotrading for hikikoumori
 
 ## How to use
 
-1. make `./data` directory
+1. make directories for in/out.
    ```
    $ mkdir ./data
+   $ mkdir ./out
    ```
-2. put `パラメーターテスト4.txt` in the `data` directory
+2. put indicator data in the `data` directory
 3. run `./main.py` to get analysis results
    ```
    $ python main.py
