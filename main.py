@@ -33,7 +33,8 @@ class PCA_MR:
             target_index = bs_index & (~is_2005)
             X = np.array([self.df.iloc[i,self.st_indicator:].values for i in range(len(self.df)) if (target_index[i])]).astype(float)
             MN, STD = np.mean(X, axis=0), np.std(X, axis=0)
-            X_norm = (X - MN)/STD
+            # X_norm = (X - MN)/STD
+            X_norm = np.divide(X - MN, STD, out=np.zeros_like(X - MN), where=STD!=0)
             pca = PCA(n_components=self.pc_num)
             pca.fit(X_norm)
             pc.append(np.concatenate([MN.reshape(1,-1),STD.reshape(1,-1),pca.components_],axis=0))
@@ -76,7 +77,8 @@ class PCA_MR:
 
                 # compress dimension
                 X_train = self.df.iloc[:,self.st_indicator:].values[target_index,:]
-                X_train_norm = (X_train - MN)/STD
+                # X_train_norm = (X_train - MN)/STD
+                X_train_norm = np.divide(X_train - MN, STD, out=np.zeros_like(X_train - MN), where=STD!=0)
                 Xd_train = np.dot(X_train_norm, self.df_pc.iloc[:,col_st:col_st + self.pc_num].values)
                 y_train = self.df[self.y_label].values[target_index].reshape(-1,1)
 
@@ -95,8 +97,9 @@ class PCA_MR:
 
                 # compress dimension
                 X_test = self.df.iloc[:,self.st_indicator:].values[target_index,:]
-                # X_test = np.array([df.iloc[i,self.st_indicator:].values for i in range(len(df)) if (target_index[i])]).astype(float)
-                X_test_norm = (X_test - MN)/STD
+                # X_test_norm = (X_test - MN)/STD
+                X_test_norm = np.divide(X_test - MN, STD, out=np.zeros_like(X_test - MN), where=STD!=0)
+
                 Xd_test = np.dot(X_test_norm, self.df_pc.iloc[:,col_st:col_st + self.pc_num].values)
                 y_test = self.df[self.y_label].values[target_index].reshape(-1,1)
 
@@ -230,9 +233,9 @@ def RSI_ver01():
 
     # set paths
     csv_paths = list(Path('./data/RSI逆張り_PCA重回帰ver01').glob('*.csv'))
-    out_parent_dir = Path('./out/20211027_RSI_PCAMR_ver01_out')
+    out_parent_dir = Path('./out/20211104_RSI_PCAMR_ver01_out')
 
-    err_i = [3, 5]
+    # err_i = []
 
     for i, csv_path in enumerate(csv_paths):
 
@@ -250,7 +253,7 @@ def RSI_ver01():
             out_dir = out_parent_dir / csv_path.name[:-4]
             out_dir.mkdir(parents=True, exist_ok=True)
             results = []
-            for th_mr in [-1.5,-1,-0.5,0.5,1,1.5]:
+            for th_mr in [0,1,1.5]:
                 print(f'cross-validation with th={th_mr}')
                 results.append(net.experiment(out_dir, th_mr=th_mr))
                 print()
